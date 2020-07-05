@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>Treasure Gram</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+	<script src="{% static 'jquery.js' %}" type="text/javascript"></script>
+	<script src="{% static 'main.js' %}" type="text/javascript"></script>
+</head>
+<body>
+	<h1>Treasure Gram</h1>
+	<div style="text-align: center;">
+		{% for treasure in treasures %}
+			<p><a href="/{{ treasure.id }}/">{{ treasure.name }}</a></p>
+			<p>{{ treasure.material }}</p>
+			{% if treasure.value > 0 %}
+				<p>{{ treasure.value }}</p>
+			{% else %}
+				<p>Unknown</p>
+			{% endif %}
+			<p>
+				<form method="post" action="{% url 'like' %}">
+					{% csrf_token %}
+					<button id="likes" data-id="{{ treasure.id }}" type="button">
+						Likes
+						{% if treasure.likes > 0 %}
+							{{ treasure.likes }}
+						{% endif %}
+					</button>
+				</form>
+			</p>
+		{% endfor %}
+	</div>
+</body>
+</html>
+
+<!-- Every three columns, this code would end the last row and begin a new row.
+
+<div class="row">
+	{% for treasure in treasures %}
+		<div class="col-md-4">
+			....
+		</div>
+		{% if forloop.counter|divisibleby:3 %}
+			</div><div class="row">
+		{% endif %} 
+	{% endfor %}
+</div>
+
+-->
